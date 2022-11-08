@@ -26,6 +26,7 @@ namespace SportsSchadule
             })
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddControllersWithViews();
+            builder.Services.AddApplicationServices();
 
             var app = builder.Build();
 

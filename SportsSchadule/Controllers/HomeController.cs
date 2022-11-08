@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SportSchadule.Core.Contracts;
 using SportsSchadule.Models;
 using System.Diagnostics;
 
@@ -6,9 +7,17 @@ namespace SportsSchadule.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private readonly ISportService sportService;
+
+        public HomeController(ISportService _sportService)
         {
-            return View();
+            this.sportService = _sportService;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var model = await sportService.AllSports();
+            return View(model);
         }
 
 

@@ -30,6 +30,8 @@ namespace SportsSchedule.Infrastructure.Data
 
         public List<Training> Trainings { get; set; }
 
+        public List<SportsUsers> SportUsers { get; set; }
+
 
 
 

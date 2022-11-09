@@ -10,6 +10,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             services.AddScoped<IRepository, Repository>();
             services.AddScoped<ISportService, SportService>();
+            services.AddScoped<IHallService, HallService>();
 
             return services;
         }

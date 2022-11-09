@@ -9,11 +9,11 @@ using SportsSchadule.Infrastucture.Data;
 
 #nullable disable
 
-namespace SportsSchadule.Infrastucture.Migrations
+namespace SportsSchedule.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221107214520_createFirstTables")]
-    partial class createFirstTables
+    [Migration("20221109184054_new")]
+    partial class @new
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -88,6 +88,10 @@ namespace SportsSchadule.Infrastucture.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -139,6 +143,8 @@ namespace SportsSchadule.Infrastucture.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -261,6 +267,10 @@ namespace SportsSchadule.Infrastucture.Migrations
                     b.Property<string>("CoachId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -291,6 +301,21 @@ namespace SportsSchadule.Infrastucture.Migrations
                     b.ToTable("SportsHalls");
                 });
 
+            modelBuilder.Entity("SportsSchedule.Infrastructure.Data.SportsUsers", b =>
+                {
+                    b.Property<int>("SportId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("SportId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("SportsUsers");
+                });
+
             modelBuilder.Entity("SportsSchedule.Infrastructure.Data.Training", b =>
                 {
                     b.Property<int>("Id")
@@ -318,6 +343,35 @@ namespace SportsSchadule.Infrastucture.Migrations
                     b.HasIndex("SportId");
 
                     b.ToTable("Trainings");
+                });
+
+            modelBuilder.Entity("SportsSchedule.Infrastructure.Data.TrainingsUsers", b =>
+                {
+                    b.Property<int>("TrainingId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("TrainingId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("TrainingsUsers");
+                });
+
+            modelBuilder.Entity("SportsSchedule.Infrastructure.Data.User", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Phone")
+                        .HasColumnType("int");
+
+                    b.HasDiscriminator().HasValue("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -399,6 +453,25 @@ namespace SportsSchadule.Infrastucture.Migrations
                     b.Navigation("Sport");
                 });
 
+            modelBuilder.Entity("SportsSchedule.Infrastructure.Data.SportsUsers", b =>
+                {
+                    b.HasOne("SportsSchedule.Infrastructure.Data.Sport", "Sport")
+                        .WithMany("SportUsers")
+                        .HasForeignKey("SportId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SportsSchedule.Infrastructure.Data.User", "User")
+                        .WithMany("UserSports")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Sport");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("SportsSchedule.Infrastructure.Data.Training", b =>
                 {
                     b.HasOne("SportsSchedule.Infrastructure.Data.Hall", "Hall")
@@ -418,6 +491,25 @@ namespace SportsSchadule.Infrastucture.Migrations
                     b.Navigation("Sport");
                 });
 
+            modelBuilder.Entity("SportsSchedule.Infrastructure.Data.TrainingsUsers", b =>
+                {
+                    b.HasOne("SportsSchedule.Infrastructure.Data.Training", "Training")
+                        .WithMany("TrainingUsers")
+                        .HasForeignKey("TrainingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SportsSchedule.Infrastructure.Data.User", "User")
+                        .WithMany("UserTrainings")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Training");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("SportsSchedule.Infrastructure.Data.Hall", b =>
                 {
                     b.Navigation("HallsSports");
@@ -427,9 +519,23 @@ namespace SportsSchadule.Infrastucture.Migrations
 
             modelBuilder.Entity("SportsSchedule.Infrastructure.Data.Sport", b =>
                 {
+                    b.Navigation("SportUsers");
+
                     b.Navigation("SportsHalls");
 
                     b.Navigation("Trainings");
+                });
+
+            modelBuilder.Entity("SportsSchedule.Infrastructure.Data.Training", b =>
+                {
+                    b.Navigation("TrainingUsers");
+                });
+
+            modelBuilder.Entity("SportsSchedule.Infrastructure.Data.User", b =>
+                {
+                    b.Navigation("UserSports");
+
+                    b.Navigation("UserTrainings");
                 });
 #pragma warning restore 612, 618
         }

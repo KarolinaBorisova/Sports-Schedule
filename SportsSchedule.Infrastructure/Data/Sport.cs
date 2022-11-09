@@ -1,10 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace SportsSchedule.Infrastructure.Data
 {
@@ -23,6 +19,10 @@ namespace SportsSchedule.Infrastructure.Data
         public string Name { get; set; } = null!;
 
         public string ImageUrl { get; set; }
+
+        public string Description { get; set; }
+
+        public string? CoachId { get; set; }
 
         public IdentityUser Coach { get; set; }
 

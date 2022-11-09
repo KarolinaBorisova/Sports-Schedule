@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SportSchadule.Core.Contracts;
 using SportSchadule.Core.Models.Sport;
+using SportSchadule.Core.Services;
 
 namespace SportsSchadule.Controllers
 {
@@ -8,13 +10,20 @@ namespace SportsSchadule.Controllers
     [Authorize]
     public class SportController : Controller
     {
+        private readonly ISportService sportService;
+
+        public SportController(ISportService _sportService)
+        {
+            this.sportService = _sportService;
+        }
+
         [AllowAnonymous]
         public async Task<IActionResult> All()
         {
-            var model = new SportViewModel();
-
-            return  View(model);
+            var model = await sportService.AllSportsInfo();
+            return View(model);
         }
+
 
         public async Task<IActionResult> Mine()
         {

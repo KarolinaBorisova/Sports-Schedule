@@ -8,7 +8,7 @@ using SportsSchadule.Infrastucture.Data;
 
 #nullable disable
 
-namespace SportsSchadule.Infrastucture.Migrations
+namespace SportsSchedule.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -264,6 +264,10 @@ namespace SportsSchadule.Infrastucture.Migrations
 
                     b.Property<string>("CoachId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageUrl")
                         .IsRequired()

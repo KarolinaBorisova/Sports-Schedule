@@ -1,10 +1,38 @@
 ﻿@using SportSchadule.Core.Models.Sport
-@model SportViewModel
 
+@model IEnumerable<AllSportsViewModel>
 @{
     ViewBag.Title = "All Sports";
+    
 }
 
-<div class="text-center">
-    <h1 class="display-4">@ViewBag.Title</h1>
+@if (!Model.Any())
+{
+    <p class="lead">
+        There are no sports in the system currently available!
+    </p>
+}
+else{
+<div class="card-deck">
+   @foreach (var sport in Model)
+   {
+            <div class="card">
+                <img class="card-img-top" src="@sport.ImageUrl" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">@sport.Name</h5>
+                    <p class="card-text">@sport.Description</p>
+                </div>
+                <div class="card-footer">
+                  @foreach (var hall in sport.Halls)
+                  {
+                        <h5>
+                            <a class="btn btn-primary" asp-controller="Hall" asp-action="Info"
+                   asp-route-id="@hall.Id"> @hall.Name</a>
+                        </h5>
+                    }
+                </div>
+            </div>
+        }
+
 </div>
+}

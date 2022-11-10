@@ -52,21 +52,6 @@ namespace SportsSchedule.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Halls",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Capacity = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Halls", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -194,30 +179,6 @@ namespace SportsSchedule.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SportsHalls",
-                columns: table => new
-                {
-                    SportId = table.Column<int>(type: "int", nullable: false),
-                    HallId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SportsHalls", x => new { x.HallId, x.SportId });
-                    table.ForeignKey(
-                        name: "FK_SportsHalls_Halls_HallId",
-                        column: x => x.HallId,
-                        principalTable: "Halls",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_SportsHalls_Sports_SportId",
-                        column: x => x.SportId,
-                        principalTable: "Sports",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "SportsUsers",
                 columns: table => new
                 {
@@ -235,6 +196,68 @@ namespace SportsSchedule.Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_SportsUsers_Sports_SportId",
+                        column: x => x.SportId,
+                        principalTable: "Sports",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AddressHall",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Country = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StreetAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PostCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    HallId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AddressHall", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Halls",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Capacity = table.Column<int>(type: "int", nullable: false),
+                    AddressHallId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Halls", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Halls_AddressHall_AddressHallId",
+                        column: x => x.AddressHallId,
+                        principalTable: "AddressHall",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SportsHalls",
+                columns: table => new
+                {
+                    SportId = table.Column<int>(type: "int", nullable: false),
+                    HallId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SportsHalls", x => new { x.HallId, x.SportId });
+                    table.ForeignKey(
+                        name: "FK_SportsHalls_Halls_HallId",
+                        column: x => x.HallId,
+                        principalTable: "Halls",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_SportsHalls_Sports_SportId",
                         column: x => x.SportId,
                         principalTable: "Sports",
                         principalColumn: "Id",
@@ -294,6 +317,11 @@ namespace SportsSchedule.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_AddressHall_HallId",
+                table: "AddressHall",
+                column: "HallId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
                 column: "RoleId");
@@ -333,6 +361,11 @@ namespace SportsSchedule.Infrastructure.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Halls_AddressHallId",
+                table: "Halls",
+                column: "AddressHallId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Sports_CoachId",
                 table: "Sports",
                 column: "CoachId");
@@ -361,10 +394,22 @@ namespace SportsSchedule.Infrastructure.Migrations
                 name: "IX_TrainingsUsers_UserId",
                 table: "TrainingsUsers",
                 column: "UserId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_AddressHall_Halls_HallId",
+                table: "AddressHall",
+                column: "HallId",
+                principalTable: "Halls",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.SetNull);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_AddressHall_Halls_HallId",
+                table: "AddressHall");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -396,13 +441,16 @@ namespace SportsSchedule.Infrastructure.Migrations
                 name: "Trainings");
 
             migrationBuilder.DropTable(
-                name: "Halls");
-
-            migrationBuilder.DropTable(
                 name: "Sports");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Halls");
+
+            migrationBuilder.DropTable(
+                name: "AddressHall");
         }
     }
 }

@@ -12,8 +12,8 @@ using SportsSchadule.Infrastucture.Data;
 namespace SportsSchedule.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221110212232_newDbSet")]
-    partial class newDbSet
+    [Migration("20221111120029_seedDb")]
+    partial class seedDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -232,36 +232,6 @@ namespace SportsSchedule.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("SportsSchedule.Infrastructure.Data.AddressHall", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Country")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("HallId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PostCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("StreetAddress")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("HallId");
-
-                    b.ToTable("AddressHalls");
-                });
-
             modelBuilder.Entity("SportsSchedule.Infrastructure.Data.Hall", b =>
                 {
                     b.Property<int>("Id")
@@ -273,9 +243,6 @@ namespace SportsSchedule.Infrastructure.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("AddressHallId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Capacity")
                         .HasColumnType("int");
 
@@ -285,9 +252,30 @@ namespace SportsSchedule.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AddressHallId");
-
                     b.ToTable("Halls");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Address = "Sofia, bul.Bulgaria 1, 1421 NDK",
+                            Capacity = 10,
+                            Name = "NDK"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Address = "Sofia, ul. prof. Atanas Ishirkov, 1113",
+                            Capacity = 10,
+                            Name = "NSA"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Address = "Sofia, ul. Koloman 1, 1618",
+                            Capacity = 10,
+                            Name = "Slavia"
+                        });
                 });
 
             modelBuilder.Entity("SportsSchedule.Infrastructure.Data.Sport", b =>
@@ -318,6 +306,29 @@ namespace SportsSchedule.Infrastructure.Migrations
                     b.HasIndex("CoachId");
 
                     b.ToTable("Sports");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Ballet is an art form created by the movement of the human body. It is theatrical – performed on a stage to an audience utilizing costumes, scenic design and lighting. It can tell a story or express a thought, concept or emotion. Ballet dance can be magical, exciting, provoking or disturbing.",
+                            ImageUrl = "https://imgs.classicfm.com/images/408219?width=3569&crop=4_3&signature=H6XmgyqpPpeY4OfHpqysk1ttwU8=",
+                            Name = "Ballet"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = " 	Karate is a Japanese martial art whose physical aspects seek the development of defensive and counterattacking body movements.  The themes of traditional karate training are fighting and self-defense, though its mental and moral aspects target the overall improvement of the individual.  This is facilitated by the discipline and persistent effort required in training.   If karate had to be described in only one sentence, then the most suitable one may arguably be \"You never attack first in karate.\"",
+                            ImageUrl = "https://i.imgur.com/9lMKyhU.jpg",
+                            Name = "Karate"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "Basketball is a team sport in which two teams, most commonly of five players each, opposing one another on a rectangular court, compete with the primary objective of shooting a basketball through the defender's hoop in diameter mounted 3.048 m high to a backboard at each end of the court, while preventing the opposing team from shooting through their own hoop.",
+                            ImageUrl = "https://i.guim.co.uk/img/media/9a137bb107eb9df91aa6054a60d4ad8ce7783f60/0_55_4585_2752/master/4585.jpg?width=620&quality=45&dpr=2&s=none",
+                            Name = "Basketball"
+                        });
                 });
 
             modelBuilder.Entity("SportsSchedule.Infrastructure.Data.SportsHalls", b =>
@@ -457,26 +468,6 @@ namespace SportsSchedule.Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("SportsSchedule.Infrastructure.Data.AddressHall", b =>
-                {
-                    b.HasOne("SportsSchedule.Infrastructure.Data.Hall", "Hall")
-                        .WithMany()
-                        .HasForeignKey("HallId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.Navigation("Hall");
-                });
-
-            modelBuilder.Entity("SportsSchedule.Infrastructure.Data.Hall", b =>
-                {
-                    b.HasOne("SportsSchedule.Infrastructure.Data.AddressHall", "AddressHall")
-                        .WithMany()
-                        .HasForeignKey("AddressHallId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.Navigation("AddressHall");
                 });
 
             modelBuilder.Entity("SportsSchedule.Infrastructure.Data.Sport", b =>

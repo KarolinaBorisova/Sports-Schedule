@@ -12,8 +12,8 @@ using SportsSchadule.Infrastucture.Data;
 namespace SportsSchedule.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221110091151_new")]
-    partial class @new
+    [Migration("20221110222719_starAgain")]
+    partial class starAgain
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -232,36 +232,6 @@ namespace SportsSchedule.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("SportsSchedule.Infrastructure.Data.AddressHall", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Country")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("HallId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PostCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("StreetAddress")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("HallId");
-
-                    b.ToTable("AddressHall");
-                });
-
             modelBuilder.Entity("SportsSchedule.Infrastructure.Data.Hall", b =>
                 {
                     b.Property<int>("Id")
@@ -273,9 +243,6 @@ namespace SportsSchedule.Infrastructure.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("AddressHallId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Capacity")
                         .HasColumnType("int");
 
@@ -284,8 +251,6 @@ namespace SportsSchedule.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AddressHallId");
 
                     b.ToTable("Halls");
                 });
@@ -457,26 +422,6 @@ namespace SportsSchedule.Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("SportsSchedule.Infrastructure.Data.AddressHall", b =>
-                {
-                    b.HasOne("SportsSchedule.Infrastructure.Data.Hall", "Hall")
-                        .WithMany()
-                        .HasForeignKey("HallId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.Navigation("Hall");
-                });
-
-            modelBuilder.Entity("SportsSchedule.Infrastructure.Data.Hall", b =>
-                {
-                    b.HasOne("SportsSchedule.Infrastructure.Data.AddressHall", "AddressHall")
-                        .WithMany()
-                        .HasForeignKey("AddressHallId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.Navigation("AddressHall");
                 });
 
             modelBuilder.Entity("SportsSchedule.Infrastructure.Data.Sport", b =>

@@ -27,10 +27,6 @@ namespace SportsSchedule.Infrastructure.Data
         [Required]
         public int Capacity { get; set; }
 
-        [ForeignKey(nameof(AddressHall))]
-        public int? AddressHallId { get; set; }
-       
-        public AddressHall? AddressHall { get; set; }
 
         public List<SportsHalls> HallsSports { get; set; }
 

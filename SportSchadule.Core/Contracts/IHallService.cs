@@ -6,5 +6,7 @@ namespace SportSchadule.Core.Contracts
     public interface IHallService
     {
         Task<HallInfoViewModel> GetHallById(int id);
+
+        Task<IEnumerable<HallInfoViewModel>> AllHalls();
     }
 }

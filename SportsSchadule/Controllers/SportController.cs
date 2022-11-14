@@ -11,10 +11,13 @@ namespace SportsSchadule.Controllers
     public class SportController : Controller
     {
         private readonly ISportService sportService;
+        private readonly IHallService hallService;
 
-        public SportController(ISportService _sportService)
+        public SportController(ISportService _sportService,
+            IHallService _hallService)
         {
             this.sportService = _sportService;
+            this.hallService = _hallService;
         }
 
         [AllowAnonymous]
@@ -39,10 +42,14 @@ namespace SportsSchadule.Controllers
             return View(model);
         }
 
-       
-        public IActionResult Add()
+        [AllowAnonymous]
+        public async Task<IActionResult> Add()
         {
-            return View();
+            var model = new SportAddViewModel()
+            { 
+                Halls = await hallService.AllHalls()
+            };
+            return View(model);
         }
 
         [HttpPost]

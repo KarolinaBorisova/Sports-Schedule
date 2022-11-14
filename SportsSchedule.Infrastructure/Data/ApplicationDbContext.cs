@@ -30,6 +30,7 @@ namespace SportsSchadule.Infrastucture.Data
 
             builder.ApplyConfiguration(new SportConfiguration());
             builder.ApplyConfiguration(new HallConfiguration());
+            builder.ApplyConfiguration(new SportsHallsConfiguration());
         }
 
         public DbSet<Hall> Halls { get; set; } = null!;

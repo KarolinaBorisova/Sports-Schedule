@@ -26,7 +26,7 @@ namespace SportsSchedule.Infrastructure.Data.Configuration
                 Description = "Ballet is an art form created by the movement of the human body." +
                 " It is theatrical – performed on a stage to an audience utilizing costumes, scenic design and lighting. It can tell a story or express a thought, concept or emotion. Ballet dance can be magical, exciting, provoking or disturbing.",
                 ImageUrl = "https://imgs.classicfm.com/images/408219?width=3569&crop=4_3&signature=H6XmgyqpPpeY4OfHpqysk1ttwU8=",
-              
+                
             };
             sports.Add(sport);
 

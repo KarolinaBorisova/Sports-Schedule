@@ -32,6 +32,8 @@ namespace SportSchadule.Core.Services
         }
 
        public async Task<IEnumerable<AllSportsViewModel>> AllSportsInfo()
+
+
         {
             // How to order sports
             return await repo.AllReadonly<Sport>()
@@ -53,5 +55,6 @@ namespace SportSchadule.Core.Services
 
         }
 
+      
     }
 }

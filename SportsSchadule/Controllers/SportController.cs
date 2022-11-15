@@ -52,15 +52,18 @@ namespace SportsSchadule.Controllers
             return View(model);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Add(SportAddViewModel model)
-        {
-            int id = 1;
-            if (!ModelState.IsValid)
-            { 
-            }
-            return RedirectToAction(nameof(Info),new { id});
-        }
+      //  [HttpPost]
+      //  public async Task<IActionResult> Add(AllSportsViewModel model)
+      //  {
+      //      if (!ModelState.IsValid)
+      //      { 
+      //          return View(model);
+      //      }
+      //
+      //      int id = await sportService.Create(model);
+      //
+      //      return RedirectToAction(nameof(Info),new { id});
+      //  }
 
         public async Task<IActionResult> Edit(int id)
         {

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SportSchadule.Core.Contracts;
 using SportSchadule.Core.Models.Hall;
+using SportSchadule.Core.Models.Sport;
 using SportsSchedule.Infrastructure.Data;
 using SportsSchedule.Infrastructure.Data.Common;
 
@@ -41,6 +42,23 @@ namespace SportSchadule.Core.Services
                 Capacity = hall.Capacity,
                 PlacesLeft = hall.Capacity
             };
+        }
+
+        public async Task<int> Create(HallAddViewModel model)
+        {
+            var hall = new Hall()
+            {
+                Name = model.Name,
+                Address = model.Address,
+                Capacity = model.Capacity,
+
+            };
+
+            await repo.AddAsync(hall);
+            await repo.SaveChangesAsync();
+
+            return hall.Id;
+
         }
     }
 }

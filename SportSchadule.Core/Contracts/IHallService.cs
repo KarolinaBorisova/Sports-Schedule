@@ -8,5 +8,7 @@ namespace SportSchadule.Core.Contracts
         Task<HallInfoViewModel> GetHallById(int id);
 
         Task<IEnumerable<HallInfoViewModel>> AllHalls();
+
+        Task<int> Create(HallAddViewModel model);
     }
 }

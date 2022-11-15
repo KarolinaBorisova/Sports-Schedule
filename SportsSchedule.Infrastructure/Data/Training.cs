@@ -31,6 +31,6 @@ namespace SportsSchedule.Infrastructure.Data
         [ForeignKey(nameof(HallId))]
         public Hall Hall { get; set; } = null!;
 
-        public List<TrainingsUsers> TrainingUsers { get; set; }
+        public List<TrainingsUsers> TrainingUsers { get; set; } = null!;
     }
 }

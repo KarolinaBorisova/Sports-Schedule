@@ -55,6 +55,27 @@ namespace SportSchadule.Core.Services
 
         }
 
-      
+        public async Task<int> Create(AllSportsViewModel model)
+        {
+            var sport = new Sport()
+            { 
+               Name = model.Name,
+               Description = model.Description,
+               ImageUrl = model.ImageUrl,
+
+            };
+
+            await repo.AddAsync(sport);
+            await repo.SaveChangesAsync();
+
+            return sport.Id;
+
+        }
+
+        public async Task<bool> HallExists(int hallId)
+        {
+            return await repo.AllReadonly<Hall>()
+                .AnyAsync(h=>h.Id == hallId);
+        }
     }
 }
